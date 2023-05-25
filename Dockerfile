@@ -1,5 +1,5 @@
 FROM python:3.9
 WORKDIR /app
 COPY . /app
-run pip install requests
+pip install -r requirements.txt
 CMD ["uvicorn", "wrapper_api:app", "--host", "0.0.0.0", "--port", "8081"]
