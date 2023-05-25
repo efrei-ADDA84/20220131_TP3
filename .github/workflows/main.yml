@@ -23,7 +23,7 @@ jobs:
       - name: "Build and Push image"
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
         run: |
@@ -36,8 +36,8 @@ jobs:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: devops-20220131
           image: {{ secrets.REGISTRY_LOGIN_SERVER }}/20220131:v1
-          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }
-          registry-username: ${{ secrets.REGISTRY_LOGIN_USERNAME }
-          registry-password: ${{ secrets.REGISTRY_LOGIN_PASSWORD }
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_LOGIN_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_LOGIN_PASSWORD }}
           name: "20220131"
           location: "france south"
