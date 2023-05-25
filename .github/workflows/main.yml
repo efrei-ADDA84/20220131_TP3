@@ -1,0 +1,42 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Build and Deploy to ACI
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Azure CLI
+        uses: azure/CLI@v1
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: efreidevops.azurecr.io
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and Push Docker image
+        run: |
+          docker build . -t efreidevops.azurecr.io/20220131/${{ secrets.REGISTRY_USERNAME }}:${{ github.sha }}
+          docker push efreidevops.azurecr.io/20220131/${{ secrets.REGISTRY_USERNAME }}:${{ github.sha }}
+
+      - name: Deploy to ACI
+        uses: azure/container-instances-deploy@v1
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: devops-20220131
+          image: efreidevops.azurecr.io/20220131/${{ secrets.REGISTRY_USERNAME }}:${{ github.sha }}
+          name: 20220131
+          location: francecentral
