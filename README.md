@@ -75,3 +75,54 @@ J'ai ensuite exécuté les commandes suivantes pour tester mon travail :
 
 docker run --network host --env API_KEY=**** kymguzman/efrei-devops-tp2
 curl "http://localhost:8081/?lat=5.902785&lon=102.754175"
+
+
+
+
+-------------------------------------TP3 Cloud - ACI---------------------------------------------------------------
+
+Ce rapport présente les étapes suivies pour mettre en place un déploiement automatisé d'une application conteneurisée sur Azure Container Instance (ACI) en utilisant GitHub Actions. Il détaille les choix techniques effectués et les difficultés rencontrées tout au long du processus.
+
+Étapes suivies:
+
+    Création du Repository GitHub: J'ai créé un nouveau repository sur GitHub pour héberger le code de l'application. https://github.com/efrei-ADDA84/20220131_TP3
+
+    Configuration de l'environnement local: J'ai configuré mon environnement de développement en installant Docker et les dépendances nécessaires pour l'application (requests, uvicorn, fastapi).
+
+    Mise en place du Dockerfile: J'ai rédigé un Dockerfile qui définit l'image Docker de l'application. Le Dockerfile copie les fichiers de l'application dans le conteneur, installe les dépendances Python à l'aide de pip, et définit la commande pour exécuter l'API à l'aide d'Uvicorn. 
+
+    Test de l'application en local: J'ai testé l'application en local pour m'assurer qu'elle fonctionne correctement avant de la déployer sur Azure. J'ai utilisé des requêtes CURL pour vérifier les réponses de l'API et m'assurer qu'elle renvoie les données météo attendues.
+
+    Configuration des secrets GitHub: Les secrets nécessaires à l'exécution du workflow de déploiement automatisé ont été ajouté. Les secrets contenant les informations d'authentification Azure (AZURE_CREDENTIALS, REGISTRY_LOGIN_SERVER, REGISTRY_USERNAME, REGISTRY_PASSWORD) ont été ajoutées par le professeur via l'organisation et j'ai ajouté le secret qui contient la clé d'API OpenWeatherMap (API_KEY).
+
+    Mise en place du workflow GitHub Actions: J'ai créé un fichier de workflow GitHub Actions manuellement sur github pour automatiser le processus de build et de déploiement de l'application sur Azure. Le workflow est déclenché à chaque push sur la branche principale (main). Il utilise les actions GitHub pour effectuer les étapes suivantes:
+        Checkout du code source du repository.
+        Connexion à Azure en utilisant les informations d'authentification.
+        Construction de l'image Docker et son push vers Azure Container Registry (ACR).
+        Déploiement de l'image sur Azure Container Instance (ACI) en utilisant les paramètres spécifiés (resource group, DNS name label, etc.).
+
+    Exécution du workflow: J'ai déclenché le workflow GitHub Actions lors de mon premier commit du worflow, lorsque j'ai commité les modifications que j'ai apportées au workflow et à chaque fois que j'ai pushé sur la branche principale. J'ai suivi les logs et les résultats des différentes étapes pour m'assurer que le processus de build et de déploiement s'est déroulé avec succès.
+
+Intérêt de l'utilisation de GitHub Actions pour le déploiement :
+
+L'utilisation de GitHub Actions pour automatiser le processus de déploiement présente plusieurs avantages significatifs :
+
+    Automatisation du processus : GitHub Actions permet d'automatiser le processus de build, de test et de déploiement de l'application. Une fois le workflow de déploiement configuré, il est déclenché automatiquement à chaque push sur la branche principale, ce qui évite d'avoir à effectuer manuellement ces tâches répétitives.
+
+    Facilité d'intégration avec le workflow de développement : GitHub Actions est étroitement intégré avec GitHub, ce qui facilite la mise en place d'un workflow de développement continu. Les développeurs peuvent travailler sur leurs branches, effectuer des pushs réguliers et avoir la certitude que l'application sera déployée automatiquement dès que les modifications sont validées sur la branche principale.
+
+    Reproductibilité et traçabilité : En utilisant un workflow de déploiement basé sur GitHub Actions, le processus de déploiement est reproductible à chaque push. Chaque étape est documentée et traçable grâce aux logs et aux résultats des actions exécutées. Cela facilite la collaboration entre les membres de l'équipe et permet de revenir en arrière en cas de problème.
+
+    Gestion des secrets et sécurité : GitHub Actions offre une gestion intégrée des secrets via les secrets GitHub. Les informations sensibles, telles que les informations d'authentification Azure, peuvent être stockées de manière sécurisée et utilisées dans les workflows sans les exposer directement dans les fichiers de configuration. Cela renforce la sécurité et permet de partager facilement les workflows sans divulguer les informations sensibles.
+
+Apports du TP et apprentissages :
+
+Ce TP m'a permis d'acquérir plusieurs connaissances et compétences clés :
+
+    Gestion des conteneurs avec Docker : J'ai appris à créer un fichier Dockerfile pour définir l'environnement d'exécution de mon application et à utiliser Docker pour construire et exécuter des conteneurs.
+
+    Déploiement sur Azure Container Instance (ACI) : J'ai appris à déployer des conteneurs sur Azure en utilisant Azure Container Instance (ACI). J'ai compris les concepts clés liés au déploiement et à la gestion des conteneurs sur une plateforme cloud.
+
+    Automatisation du déploiement avec GitHub Actions : J'ai découvert comment configurer un workflow GitHub Actions pour automatiser le processus de build et de déploiement de l'application. J'ai compris les avantages de cette approche et la manière de l'intégrer dans un flux de développement continu.
+
+    Gestion des secrets avec GitHub Actions : J'ai appris à utiliser les secrets GitHub pour gérer de manière sécurisée les informations sensibles nécessaires au déploiement de l'application. J'ai compris l'importance de protéger ces informations et de les gérer de manière centralisée.
