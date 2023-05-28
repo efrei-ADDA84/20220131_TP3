@@ -1,5 +1,3 @@
-# 20220131
-
 
 Rapport TP1 - Docker
 
